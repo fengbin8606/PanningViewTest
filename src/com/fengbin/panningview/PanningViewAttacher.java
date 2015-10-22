@@ -34,6 +34,7 @@ public class PanningViewAttacher implements ViewTreeObserver.OnGlobalLayoutListe
 
     private RectF mDisplayRect = new RectF();
 
+    // ValueAnimator可以说是整个属性动画框架的核心类，动画的驱动就是在此类中实现的。
     private ValueAnimator mCurrentAnimator;
 
     private LinearInterpolator mLinearInterpolator;// 以常量速率改变
@@ -84,8 +85,10 @@ public class PanningViewAttacher implements ViewTreeObserver.OnGlobalLayoutListe
         // ScaleTypeMatrix 用矩阵来绘制图片(从左上角起始的矩阵区域)，
         setImageViewScaleTypeMatrix(imageView);
 
-        // 如果用Matrix matrix = mImage.getImageMatrix(); matrix只是得到一个对象的引用
-        // 应该用Matrix matrix = new Matrix (mImage.getImageMatrix());这样才是得到一个克隆对象
+        // 如果用Matrix matrix = mImage.getImageMatrix();
+        // matrix只是得到一个对象的引用
+        // 应该用Matrix matrix = new Matrix
+        // (mImage.getImageMatrix());这样才是得到一个克隆对象
         mMatrix = imageView.getImageMatrix();
         if (mMatrix == null) {
             mMatrix = new Matrix();
@@ -149,21 +152,21 @@ public class PanningViewAttacher implements ViewTreeObserver.OnGlobalLayoutListe
         mIsPanning = false;
         Log.d(TAG, "panning animation stopped by user");
 
-        //
         if (mCurrentAnimator != null) {
             mCurrentAnimator.removeAllListeners();
             mCurrentAnimator.cancel();
             mCurrentAnimator = null;
         }
         mTotalTime += mCurrentPlayTime;
-        Log.d(TAG, "mTotalTime : " + mTotalTime);
+        Log.d(TAG, "mTotalTime : " + mTotalTime);// 显示总时间 在这里没有什么用吧
     }
 
     /**
-     * Clean-up the resources attached to this object. This needs to be called when the ImageView is
-     * no longer used. A good example is from {@link android.view.View#onDetachedFromWindow()} or
-     * from {@link android.app.Activity#onDestroy()}. This is automatically called if you are using
-     * {@link com.fourmob.panningview.PanningView}.
+     * Clean-up the resources attached to this object. This needs to be called
+     * when the ImageView is no longer used. A good example is from
+     * {@link android.view.View#onDetachedFromWindow()} or from
+     * {@link android.app.Activity#onDestroy()}. This is automatically called if
+     * you are using {@link com.fourmob.panningview.PanningView}.
      */
     public final void cleanup() {
         if (null != mImageView) {
@@ -237,10 +240,11 @@ public class PanningViewAttacher implements ViewTreeObserver.OnGlobalLayoutListe
             final int left = imageView.getLeft();
 
             /**
-             * We need to check whether the ImageView's bounds have changed. This would be easier if
-             * we targeted API 11+ as we could just use View.OnLayoutChangeListener. Instead we have
-             * to replicate the work, keeping track of the ImageView's bounds and then checking if
-             * the values change.
+             * We need to check whether the ImageView's bounds have changed.
+             * This would be easier if we targeted API 11+ as we could just use
+             * View.OnLayoutChangeListener. Instead we have to replicate the
+             * work, keeping track of the ImageView's bounds and then checking
+             * if the values change.
              */
             if (top != mIvTop || bottom != mIvBottom || left != mIvLeft || right != mIvRight) {
                 update();
@@ -261,9 +265,11 @@ public class PanningViewAttacher implements ViewTreeObserver.OnGlobalLayoutListe
         }
 
         Log.d(TAG, "mWay : " + mWay);
-        Log.d(TAG, "mDisplayRect : " + mDisplayRect);
+        Log.e(TAG, "mDisplayRect : " + mDisplayRect);// 这个打印出来是Rect的四个值
 
         long remainingDuration = mDuration - mTotalTime;
+
+        // 如果是竖屏
         if (mIsPortrait) {
             if (mWay == Way.R2L) {
                 animate(mDisplayRect.left, mDisplayRect.left
@@ -299,17 +305,26 @@ public class PanningViewAttacher implements ViewTreeObserver.OnGlobalLayoutListe
         Log.d(TAG, "startPanning : " + start + " to " + end + ", in " + duration + "ms");
 
         mCurrentAnimator = ValueAnimator.ofFloat(start, end);
+
+        /*
+         * 通过监听这个事件在属性的值更新时执行相应的操作， 对于ValueAnimator一般要监听此事件执行相应的动作，
+         * 不然Animation没意义， 在ObjectAnimator（ 继承自ValueAnimator）中会自动更新属性，
+         * 如无必要不必监听。在函数中会传递一个ValueAnimator参数，通过此参数的getAnimatedValue ()取得当前动画属性值。
+         */
         mCurrentAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (Float) animation.getAnimatedValue();
-                mMatrix.reset();
-                applyScaleOnMatrix();
+                mMatrix.reset();// 调用reset()进行矩阵的重置
+                applyScaleOnMatrix();// 改变矩阵尺寸
+
+                // 根据横屏或竖屏进行不同的移动
                 if (mIsPortrait) {
                     mMatrix.postTranslate(value, 0);
                 } else {
                     mMatrix.postTranslate(0, value);
                 }
+
                 refreshDisplayRect();
                 mCurrentPlayTime = animation.getCurrentPlayTime();
                 setCurrentImageMatrix();
@@ -336,10 +351,14 @@ public class PanningViewAttacher implements ViewTreeObserver.OnGlobalLayoutListe
 
     private void setCurrentImageMatrix() {
         getImageView().setImageMatrix(mMatrix);
+
+        // invalidate()函数的主要作用是请求View树进行重绘,该函数可以由应用程序调用,或者由系统函数间接调用
         getImageView().invalidate();
+
         getImageView().requestLayout();
     }
 
+    // 将图片的高宽设置给mMatrix
     private void refreshDisplayRect() {
         mDisplayRect.set(0, 0, getDrawableIntrinsicWidth(), getDrawableIntrinsicHeight());
         mMatrix.mapRect(mDisplayRect);
@@ -351,6 +370,7 @@ public class PanningViewAttacher implements ViewTreeObserver.OnGlobalLayoutListe
         setCurrentImageMatrix();
     }
 
+    // 根据图片和iamgeview的尺寸确定缩放比例,按照缩放比例缩放mMatrix
     private void applyScaleOnMatrix() {
         int drawableSize = mIsPortrait ? getDrawableIntrinsicHeight() : getDrawableIntrinsicWidth();
         int imageViewSize = mIsPortrait ? getImageViewHeight() : getImageViewWidth();
