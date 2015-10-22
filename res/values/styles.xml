@@ -1,0 +1,32 @@
+<resources>
+    
+    <style name="AnimationActivity" parent="@android:style/Animation.Activity">
+      <item name="android:activityOpenEnterAnimation">@anim/zoomin</item>
+      <item name="android:activityOpenExitAnimation">@anim/hold</item>
+      <item name="android:activityCloseEnterAnimation">@anim/hold</item>
+      <item name="android:activityCloseExitAnimation">@anim/zoomout</item>
+    </style>
+    <style name="ThemeActivity" parent="@android:style/Theme.NoTitleBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+    </style>
+    <style name="ThemeWhiteActivity" parent="@android:style/Theme.NoTitleBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+    </style>
+    
+    <style name="up_radius1_black_style">
+        <item name="android:shadowColor">#ff000000</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">-1.0</item>
+        <item name="android:shadowRadius">1.0</item>
+    </style>
+    <style name="down_radius1_black_style">
+        <item name="android:shadowColor">#ff000000</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">1.0</item>
+    </style>
+
+</resources>

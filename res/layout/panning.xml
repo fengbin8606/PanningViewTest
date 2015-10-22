@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/Panninglayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.fengbin.panningview.PanningView
+        android:id="@+id/panningView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"   
+        android:src="@drawable/bg_load"
+        custom:panningDurationInMs="5000"
+         />
+
+    <RelativeLayout
+        android:id="@+id/btnLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center" >
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100.0dip"
+            android:src="@drawable/logo_load" />
+        <Button
+            android:id="@+id/layout_load_register"
+            android:layout_width="fill_parent"
+            android:layout_height="44.0dip"
+            android:layout_marginLeft="48.0dip"
+            android:layout_marginRight="48.0dip"
+            android:layout_marginTop="252.0dip"
+            android:gravity="center"
+            android:text="Start Panning"
+            android:textColor="#ffffff"
+            android:textSize="18.0sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

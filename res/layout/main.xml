@@ -1,0 +1,121 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_load_bg"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="right" >
+
+    <!-- CENTER_CROP / centerCrop  按比例扩大图片的size居中显示，使得图片长(宽)等于或大于View的长(宽) -->
+
+    <com.fengbin.panningview.PanningView
+        android:id="@+id/img_load_bg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/bg_load"
+        custom:panningDurationInMs="30000" />
+
+    <RelativeLayout
+        android:id="@+id/layout_load"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center" >
+
+        <!-- android:layout_marginTop="252.0dip" -->
+
+        <LinearLayout
+            android:id="@+id/layout_account"
+            android:layout_width="fill_parent"
+            android:layout_height="89.0dip"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="10.0dip"
+            android:background="@drawable/bg_inputfield"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="44.0dip"
+                android:background="@null" >
+
+                <EditText
+                    android:id="@+id/editTextUName"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@null"
+                    android:completionThreshold="1"
+                    android:gravity="center_vertical"
+                    android:hint="用户名"
+                    android:maxLength="30"
+                    android:paddingLeft="12.0dip"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#ff222222"
+                    android:textColorHint="#ff888888"
+                    android:textSize="16.0sp" />
+
+                <ImageButton
+                    android:id="@+id/imagetBtnUname"
+                    android:layout_width="44.0dip"
+                    android:layout_height="44.0dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    android:src="@drawable/search_common_clear"
+                    />
+            </RelativeLayout>
+
+            <include layout="@layout/line_separator_1px" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="44.0dip"
+                android:background="@null" >
+
+                <EditText
+                    android:id="@+id/editTextPwd"
+                    android:layout_width="fill_parent"
+                    android:layout_height="44.0dip"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="密码"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:maxLength="20"
+                    android:paddingLeft="12.0dip"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#ff222222"
+                    android:textColorHint="#ff888888"
+                    android:textSize="16.0sp" />
+
+                <ImageButton
+                    android:id="@+id/imageBtnPwd"
+                    android:layout_width="44.0dip"
+                    android:layout_height="44.0dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    android:src="@drawable/search_common_clear"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonLogin"
+            style="@style/up_radius1_black_style"
+            android:layout_width="fill_parent"
+            android:layout_height="44.0dip"
+            android:layout_below="@id/layout_account"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_marginTop="10.0dip"
+            android:background="@drawable/btn_background_black_selector"
+            android:gravity="center"
+            android:text="登录"
+            android:textColor="#ffffff"
+            android:textSize="18.0sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
